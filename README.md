@@ -298,15 +298,24 @@ For questions about BioContextAI or the registry, visit [biocontext.ai](https://
 If you use this software in your research, please cite the BioContextAI paper:
 
 ```bibtex
-@article{biocontextai2025,
-  title = {BioContextAI: Biomedical Model Context Protocol for Agentic AI},
-  author = {BioContextAI Contributors},
+@misc{kuehlCommunitybasedBiomedicalContext2025,
+  title = {Community-Based Biomedical Context to Unlock Agentic Systems},
+  author = {Kuehl, Malte and Schaub, Darius P. and Carli, Francesco and Heumos, Lukas and {Fern{\'a}ndez-Zapata}, Camila and Kaiser, Nico and Schaul, Jonathan and Panzer, Ulf and Bonn, Stefan and Lobentanzer, Sebastian and {Saez-Rodriguez}, Julio and Puelles, Victor G.},
   year = {2025},
-  journal = {bioRxiv},
-  url = {https://biocontext.ai},
-  note = {Preprint available at biocontext.ai/blog/biocontextai-preprint-out}
+  month = jul,
+  pages = {2025.07.21.665729},
+  publisher = {bioRxiv},
+  doi = {10.1101/2025.07.21.665729},
+  url = {https://biocontext.ai}
 }
 ```
+
+## Acknowledgments
+
+- **Example Skill**: The included `single-cell-rna-qc` skill is adapted from [Anthropic's Life Sciences repository](https://github.com/anthropics/life-sciences)
+- **Anthropic**: For developing Claude Skills and the Model Context Protocol
+- **scverse®**: The scverse community ([scverse.org](https://scverse.org)) for best practices in single-cell analysis
+- **BioContextAI Community**: For fostering open-source biomedical AI infrastructure
 
 ## License
 

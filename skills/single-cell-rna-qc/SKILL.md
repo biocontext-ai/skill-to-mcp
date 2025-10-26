@@ -7,6 +7,8 @@ description: Performs quality control on single-cell RNA-seq data (.h5ad or .h5 
 
 Automated QC workflow for single-cell RNA-seq data following scverse best practices.
 
+> **Acknowledgment**: This skill is adapted from [Anthropic's Life Sciences repository](https://github.com/anthropics/life-sciences) and follows best practices from the [scverse® community](https://scverse.org).
+
 ## When to Use This Skill
 
 Use when users:
