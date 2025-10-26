@@ -22,8 +22,6 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
 ]
 dependencies = [
-  # for debug logging (referenced from the issue template)
-  # "session-info2",
   "click",
   "fastmcp",
   "httpx>=0.28,<1",

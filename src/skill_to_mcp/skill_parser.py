@@ -139,33 +139,51 @@ class SkillParser:
         except yaml.YAMLError as e:
             raise ValueError(f"Invalid YAML in frontmatter: {e}") from e
 
-    def get_skill_content(self, skill_name: str) -> str:
+    def get_skill_content(
+        self, skill_name: str, return_type: str = "both"
+    ) -> "str | dict[str, str]":
         """Get the full content of a SKILL.md file by skill name.
 
         Parameters
         ----------
         skill_name : str
             Name of the skill.
+        return_type : str
+            Type of data to return: "content", "file_path", or "both" (default).
 
         Returns
         -------
-        str
-            Full content of the SKILL.md file.
+        str | dict[str, str]
+            If return_type is "content": Full content of the SKILL.md file.
+            If return_type is "file_path": Absolute path to the SKILL.md file.
+            If return_type is "both": Dictionary with "content" and "file_path" keys.
 
         Raises
         ------
         ValueError
-            If skill is not found.
+            If skill is not found or return_type is invalid.
         """
+        if return_type not in ("content", "file_path", "both"):
+            raise ValueError(f"Invalid return_type: {return_type}. Must be 'content', 'file_path', or 'both'")
+
         skills = self.find_all_skills()
         for skill in skills:
             if skill.name == skill_name:
                 skill_md_path = skill.skill_path / "SKILL.md"
-                return skill_md_path.read_text(encoding="utf-8")
+
+                if return_type == "content":
+                    return skill_md_path.read_text(encoding="utf-8")
+                elif return_type == "file_path":
+                    return str(skill_md_path.resolve())
+                else:  # both
+                    return {
+                        "content": skill_md_path.read_text(encoding="utf-8"),
+                        "file_path": str(skill_md_path.resolve()),
+                    }
 
         raise ValueError(f"Skill '{skill_name}' not found")
 
-    def list_skill_files(self, skill_name: str, relative: bool = True) -> list[str]:
+    def list_skill_files(self, skill_name: str, relative: bool = True) -> "list[str]":
         """List all files in a skill directory recursively.
 
         Parameters
@@ -200,7 +218,9 @@ class SkillParser:
 
         raise ValueError(f"Skill '{skill_name}' not found")
 
-    def get_skill_file(self, skill_name: str, relative_path: str) -> str:
+    def get_skill_file(
+        self, skill_name: str, relative_path: str, return_type: str = "both"
+    ) -> "str | dict[str, str]":
         """Get content of a specific file within a skill directory.
 
         Parameters
@@ -209,17 +229,24 @@ class SkillParser:
             Name of the skill.
         relative_path : str
             Path relative to the skill directory.
+        return_type : str
+            Type of data to return: "content", "file_path", or "both" (default).
 
         Returns
         -------
-        str
-            Content of the requested file.
+        str | dict[str, str]
+            If return_type is "content": Content of the requested file.
+            If return_type is "file_path": Absolute path to the file.
+            If return_type is "both": Dictionary with "content" and "file_path" keys.
 
         Raises
         ------
         ValueError
-            If skill or file is not found, or if path is invalid.
+            If skill or file is not found, if path is invalid, or if return_type is invalid.
         """
+        if return_type not in ("content", "file_path", "both"):
+            raise ValueError(f"Invalid return_type: {return_type}. Must be 'content', 'file_path', or 'both'")
+
         skills = self.find_all_skills()
         for skill in skills:
             if skill.name == skill_name:
@@ -234,6 +261,14 @@ class SkillParser:
                 if not file_path.is_file():
                     raise ValueError(f"Path is not a file: {relative_path}")
 
-                return file_path.read_text(encoding="utf-8")
+                if return_type == "content":
+                    return file_path.read_text(encoding="utf-8")
+                elif return_type == "file_path":
+                    return str(file_path)
+                else:  # both
+                    return {
+                        "content": file_path.read_text(encoding="utf-8"),
+                        "file_path": str(file_path),
+                    }
 
         raise ValueError(f"Skill '{skill_name}' not found")

@@ -67,16 +67,51 @@ def test_skill_metadata_to_dict(parser):
 
 
 def test_get_skill_content(parser):
-    """Test getting skill content."""
+    """Test getting skill content with return_type='content'."""
     skills = parser.find_all_skills()
     if len(skills) > 0:
         skill_name = skills[0].name
-        content = parser.get_skill_content(skill_name)
+        content = parser.get_skill_content(skill_name, return_type="content")
         assert isinstance(content, str)
         assert len(content) > 0
         # Should contain frontmatter
         assert "---" in content
         assert f"name: {skill_name}" in content
+
+
+def test_get_skill_content_both(parser):
+    """Test getting skill content with return_type='both' (default)."""
+    skills = parser.find_all_skills()
+    if len(skills) > 0:
+        skill_name = skills[0].name
+        result = parser.get_skill_content(skill_name, return_type="both")
+        assert isinstance(result, dict)
+        assert "content" in result
+        assert "file_path" in result
+        assert isinstance(result["content"], str)
+        assert isinstance(result["file_path"], str)
+        assert len(result["content"]) > 0
+        assert result["file_path"].endswith("SKILL.md")
+
+
+def test_get_skill_content_file_path(parser):
+    """Test getting skill content with return_type='file_path'."""
+    skills = parser.find_all_skills()
+    if len(skills) > 0:
+        skill_name = skills[0].name
+        file_path = parser.get_skill_content(skill_name, return_type="file_path")
+        assert isinstance(file_path, str)
+        assert file_path.endswith("SKILL.md")
+        assert Path(file_path).exists()
+
+
+def test_get_skill_content_invalid_return_type(parser):
+    """Test getting skill content with invalid return_type."""
+    skills = parser.find_all_skills()
+    if len(skills) > 0:
+        skill_name = skills[0].name
+        with pytest.raises(ValueError, match="Invalid return_type"):
+            parser.get_skill_content(skill_name, return_type="invalid")
 
 
 def test_get_skill_content_not_found(parser):
@@ -117,14 +152,49 @@ def test_list_skill_files_not_found(parser):
 
 
 def test_get_skill_file(parser):
-    """Test getting content of a skill file."""
+    """Test getting content of a skill file with return_type='content'."""
     skills = parser.find_all_skills()
     if len(skills) > 0:
         skill_name = skills[0].name
         # Get SKILL.md content
-        content = parser.get_skill_file(skill_name, "SKILL.md")
+        content = parser.get_skill_file(skill_name, "SKILL.md", return_type="content")
         assert isinstance(content, str)
         assert len(content) > 0
+
+
+def test_get_skill_file_both(parser):
+    """Test getting skill file with return_type='both' (default)."""
+    skills = parser.find_all_skills()
+    if len(skills) > 0:
+        skill_name = skills[0].name
+        result = parser.get_skill_file(skill_name, "SKILL.md", return_type="both")
+        assert isinstance(result, dict)
+        assert "content" in result
+        assert "file_path" in result
+        assert isinstance(result["content"], str)
+        assert isinstance(result["file_path"], str)
+        assert len(result["content"]) > 0
+        assert result["file_path"].endswith("SKILL.md")
+
+
+def test_get_skill_file_file_path(parser):
+    """Test getting skill file with return_type='file_path'."""
+    skills = parser.find_all_skills()
+    if len(skills) > 0:
+        skill_name = skills[0].name
+        file_path = parser.get_skill_file(skill_name, "SKILL.md", return_type="file_path")
+        assert isinstance(file_path, str)
+        assert file_path.endswith("SKILL.md")
+        assert Path(file_path).exists()
+
+
+def test_get_skill_file_invalid_return_type(parser):
+    """Test getting skill file with invalid return_type."""
+    skills = parser.find_all_skills()
+    if len(skills) > 0:
+        skill_name = skills[0].name
+        with pytest.raises(ValueError, match="Invalid return_type"):
+            parser.get_skill_file(skill_name, "SKILL.md", return_type="invalid")
 
 
 def test_get_skill_file_not_found(parser):

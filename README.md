@@ -1,4 +1,4 @@
-# skill-to-mcp
+# Skill-to-MCP
 
 [![BioContextAI - Registry](https://img.shields.io/badge/Registry-package?style=flat&label=BioContextAI&labelColor=%23fff&color=%233555a1&link=https%3A%2F%2Fbiocontext.ai%2Fregistry)](https://biocontext.ai/registry)
 [![Tests][badge-tests]][tests]
@@ -114,14 +114,63 @@ Returns the full SKILL.md content and list of files for a specific skill:
 }
 ```
 
+The `return_type` parameter controls what data is returned:
+- `"content"`: Returns only the SKILL.md content as text
+- `"file_path"`: Returns only the absolute path to SKILL.md
+- `"both"` (default): Returns both content and file path in a dict
+
 ### get_skill_related_file
 
 Reads a specific file within a skill directory:
 ```python
 get_skill_related_file(
     skill_name="single-cell-rna-qc",
-    relative_path="scripts/qc_analysis.py"
+    relative_path="scripts/qc_analysis.py",
+    return_type="content"  # "content", "file_path", or "both" (default)
 )
+```
+
+### Example Configurations
+
+#### Claude Desktop Configuration
+
+Add to your `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "biomedical-skills": {
+      "command": "uvx",
+      "args": [
+        "skill_to_mcp",
+        "--skills-dir",
+        "/Users/yourname/biomedical-skills"
+      ],
+      "env": {
+        "UV_PYTHON": "3.12"
+      }
+    }
+  }
+}
+```
+
+#### Multiple Skill Collections
+
+You can run multiple instances with different skill directories:
+
+```json
+{
+  "mcpServers": {
+    "biomedical-skills": {
+      "command": "uvx",
+      "args": ["skill_to_mcp", "--skills-dir", "/path/to/biomedical-skills"]
+    },
+    "data-science-skills": {
+      "command": "uvx",
+      "args": ["skill_to_mcp", "--skills-dir", "/path/to/data-science-skills"]
+    }
+  }
+}
 ```
 
 ## Creating Skills

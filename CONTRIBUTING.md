@@ -12,7 +12,9 @@ cd skill-to-mcp
 
 2. Install in development mode with all dependencies:
 ```bash
-pip install -e ".[dev,test]"
+uv venv --python 3.13
+source .venv/bin/activate
+uv sync --all-extras
 ```
 
 3. Install pre-commit hooks:
@@ -25,12 +27,12 @@ pre-commit install
 The test suite uses the included `skills/` directory for testing:
 
 ```bash
-pytest tests/ -v
+uv run pytest tests/ -v
 ```
 
 With coverage:
 ```bash
-pytest tests/ --cov=src/skill_to_mcp --cov-report=html
+uv run pytest tests/ --cov=src/skill_to_mcp --cov-report=html
 ```
 
 ## Code Style
@@ -41,7 +43,7 @@ This project uses:
 
 Before committing, ensure your code passes all checks:
 ```bash
-pre-commit run --all-files
+uv run pre-commit run --all-files
 ```
 
 ## Adding New Skills
@@ -101,7 +103,7 @@ skill-to-mcp/
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Make your changes
-4. Ensure tests pass (`pytest tests/`)
+4. Ensure tests pass (`uv run pytest tests/`)
 5. Ensure code style is correct (`pre-commit run --all-files`)
 6. Commit your changes (`git commit -m 'Add amazing feature'`)
 7. Push to your branch (`git push origin feature/amazing-feature`)

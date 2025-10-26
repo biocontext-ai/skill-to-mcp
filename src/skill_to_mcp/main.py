@@ -78,7 +78,8 @@ def run_app(
     specialized knowledge and workflows stored in SKILL.md files.
 
     Configuration options:
-    - Skills directory: Set via "-s/--skills-dir" or SKILLS_DIR environment variable (required)
+    - Skills directory: Set via "-s/--skills-dir" or SKILLS_DIR environment variable
+      If not provided, uses default help skill with usage instructions
     - Transport: Set via "-t/--transport" or MCP_TRANSPORT environment variable (default: "stdio")
     - Port: Set via "-p/--port" or MCP_PORT environment variable (default: 8000)
     - Hostname: Set via "-h/--host" or MCP_HOSTNAME environment variable (default: "0.0.0.0")
@@ -90,15 +91,21 @@ def run_app(
         click.echo(__version__)
         sys.exit(0)
 
-    # Validate skills directory
-    if not skills_dir:
-        click.echo(
-            "Error: Skills directory is required. Set via --skills-dir or SKILLS_DIR environment variable.", err=True
-        )
-        sys.exit(1)
-
     logger = logging.getLogger(__name__)
-    logger.info(f"Using skills directory: {skills_dir}")
+
+    # Handle skills directory - use default if not provided
+    if not skills_dir:
+        # Use package's default skills directory containing the help skill
+        from pathlib import Path
+
+        package_dir = Path(__file__).parent
+        skills_dir = str(package_dir / "default_skills")
+        logger.warning(
+            "No skills directory provided. Using default help skill. "
+            "To use custom skills, set --skills-dir or SKILLS_DIR environment variable."
+        )
+    else:
+        logger.info(f"Using skills directory: {skills_dir}")
 
     # Initialize MCP server with skills directory
     from skill_to_mcp.mcp import initialize_mcp

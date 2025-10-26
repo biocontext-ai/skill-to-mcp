@@ -43,6 +43,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+uv.lock
 
 # OS
 .DS_Store
@@ -56,4 +57,4 @@ docs/.doctrees/
 *.log
 
 # Local settings
-.claude/settings.local.json
+.claude
