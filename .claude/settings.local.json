@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(tree:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(python -m ruff:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
