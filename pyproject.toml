@@ -4,7 +4,7 @@ requires = [ "hatchling" ]
 
 [project]
 name = "skill_to_mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Convert AI Skills (Claude Skills format) to MCP server resources"
 readme = "README.md"
 license = { file = "LICENSE" }
