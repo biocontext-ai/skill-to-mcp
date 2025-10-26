@@ -26,6 +26,7 @@ dependencies = [
   # "session-info2",
   "click",
   "fastmcp",
+  "httpx<0.28",
   "pyyaml",
 ]
 optional-dependencies.dev = [
