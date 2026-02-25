@@ -23,7 +23,7 @@ classifiers = [
 ]
 dependencies = [
   "click",
-  "fastmcp",
+  "fastmcp>=2,<3",
   "httpx>=0.28,<1",
   "pyyaml",
 ]
