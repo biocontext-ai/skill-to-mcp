@@ -34,10 +34,12 @@ jobs:
           fetch-depth: 0
       - name: Install uv
         uses: astral-sh/setup-uv@v5
+      - name: Install hatch
+        run: uv tool install hatch --with 'virtualenv<21'
       - name: Get test environments
         id: get-envs
         run: |
-          ENVS_JSON=$(uvx hatch env show --json | jq -c 'to_entries
+          ENVS_JSON=$(hatch env show --json | jq -c 'to_entries
             | map(
                 select(.key | startswith("hatch-test"))
                 | {
@@ -71,16 +73,18 @@ jobs:
         with:
           python-version: ${{ matrix.env.python }}
           cache-dependency-glob: pyproject.toml
+      - name: Install hatch
+        run: uv tool install hatch --with 'virtualenv<21'
       - name: create hatch environment
-        run: uvx hatch env create ${{ matrix.env.name }}
+        run: hatch env create ${{ matrix.env.name }}
       - name: run tests using hatch
         env:
           MPLBACKEND: agg
           PLATFORM: ${{ matrix.os }}
           DISPLAY: :42
-        run: uvx hatch run ${{ matrix.env.name }}:run-cov
+        run: hatch run ${{ matrix.env.name }}:run-cov
       - name: generate coverage report
-        run: uvx hatch run ${{ matrix.env.name }}:coverage xml
+        run: hatch run ${{ matrix.env.name }}:coverage xml
       - name: Upload coverage
         uses: codecov/codecov-action@v4
 
